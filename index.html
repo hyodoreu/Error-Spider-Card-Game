@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>error card game</title>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+
+	<style type="text/css">
+		body{margin: 0; padding: 0; overflow:hidden; font-family:'Open Sans'}
+		.main{width:1920px; height:auto; position:relative;}
+		.nav{width:1920px;height:30px; background-color:lightgrey;z-index:1000;position: relative;}
+		span{padding-top: 5px;display:inline-block;} 
+		.green{ background: radial-gradient(#0d8d3a, #065222); width:1920px; height:800px;} 
+		.game {padding-left:10px;}
+		.card{position:absolute; width:120px;}
+		#timer{padding-left:1330px; text-align: left; color:red;z-index:1001;}
+
+		#error {
+		  width: 40%;
+		  height: auto;
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  margin: auto;
+		  display: none; 
+		  z-index:3;/* 처음에는 숨깁니다. */
+		}
+	</style>
+</head>
+<body>
+	<div class="main">
+		<div class="nav"><span class="game">Error Spider Card Game</span><span id="timer"></span></div>
+		<div class="green">
+			<img src="back1.png" class="card" style="top:60px; left:40px;">
+			<img src="back2.png" class="card" style="top:60px; left:680px;">
+			<img src="jack_of_diamonds2.png" class="card" style="top:80px; left:680px;">
+			<img src="back3.png" class="card" style="top:60px; left:900px;">
+			<img src="king_of_clubs.png" class="card" style="top:100px; left:900px;">
+			<img src="line.png" class="card" style="top:60px; left:1120px;">
+			<img src="line.png" class="card" style="top:60px; left:1340px;">
+			<img src="3_of_diamonds.png" class="card" style="top:300px; left:40px;">
+			<img src="4_of_clubs.png" class="card" style="top:300px; left:240px;">
+			<img src="back2.png" class="card" style="top:300px; left:460px;">
+			<img src="king_of_spades2.png" class="card" style="top:320px; left:460px;">
+			<img src="back2.png" class="card" style="top:300px; left:680px;">
+			<img src="10_of_diamonds.png" class="card" style="top:320px; left:680px;">
+			<img src="back2.png" class="card" style="top:300px; left:900px;">
+			<img src="3_of_spades.png" class="card" style="top:320px; left:900px;">
+			<img src="back2.png" class="card" style="top:300px; left:1120px;">
+			<img src="back2.png" class="card" style="top:300px; left:1340px;">
+			<img src="back2.png" class="card" style="top:300px; left:1340px;">
+			<img src="back2.png" class="card" style="top:320px; left:1120px;">
+			<img src="9_of_spades.png" class="card" style="top:340px; left:1120px;" >
+			<img src="back2.png" class="card" style="top:320px; left:1340px;" >
+			<img src="back2.png" class="card" style="top:340px; left:1340px;">
+			<img src="back2.png" class="card" style="top:360px; left:1340px;">
+			<img src="jack_of_hearts2.png" class="card" style="top:370px; left:1340px;">
+		</div>
+	</div>
+	<img id="error" src="https://media3.giphy.com/media/HRLzyyMBEQyWI/giphy.gif?cid=ecf05e47blbxlnvhhodz523c2f6tbo4lr53xiuxsulwi2bmn&ep=v1_gifs_related&rid=giphy.gif&ct=g">
+	<script type="text/javascript">
+	    const randomImageSources = [
+	        '2_of_clubs.png',
+	        '3_of_clubs.png',
+	        '4_of_clubs.png',
+	        '5_of_clubs.png',
+	        '6_of_clubs.png',
+	        '7_of_clubs.png',
+	        '8_of_clubs.png',
+	        '9_of_clubs.png',
+	        '10_of_clubs.png',
+	        '2_of_diamonds.png',
+	        '3_of_diamonds.png',
+	        '4_of_diamonds.png',
+	        '5_of_diamonds.png',
+	        '6_of_diamonds.png',
+	        '7_of_diamonds.png',
+	        '8_of_diamonds.png',
+	        '9_of_diamonds.png',
+	        '10_of_diamonds.png',
+	        '2_of_hearts.png',
+	        '3_of_hearts.png',
+	        '4_of_hearts.png',
+	        '5_of_hearts.png',
+	        '6_of_hearts.png',
+	        '7_of_hearts.png',
+	        '8_of_hearts.png',
+	        '9_of_hearts.png',
+	        '10_of_hearts.png',
+	        '2_of_spades.png',
+	        '3_of_spades.png',
+	        '4_of_spades.png',
+	        '5_of_spades.png',
+	        '6_of_spades.png',
+	        '7_of_spades.png',
+	        '8_of_spades.png',
+	        '9_of_spades.png',
+	        '10_of_spades.png',
+	        'jack_of_diamonds2.png',
+	        'jack_of_hearts2.png',
+	        'jack_of_spades2.png',
+	        'jack_of_clubs2.png',
+	        'queen_of_diamonds2.png',
+	        'queen_of_hearts2.png',
+	        'queen_of_spades2.png',
+	        'queen_of_clubs2.png'
+	    ];
+	    /*이미지 커서 따라가기*/
+    	let generateImage = null;
+	    let mousePosition = { x: 0, y: 0 };
+
+	    setInterval(() => {
+	        const randomImageIndex = Math.floor(Math.random() * randomImageSources.length);
+	        const newImageUrl = randomImageSources[randomImageIndex];
+	        const newImage = new Image();
+	        newImage.src = newImageUrl;
+	        newImage.classList.add('card');
+	        newImage.style.position = 'absolute';
+	        selectedCard = newImage;
+	    }, 3000);
+
+	    document.querySelectorAll('.card').forEach(cardImage => {
+	        cardImage.addEventListener('click', (event) => {
+	            if (generateImage) {
+	                clearInterval(generateImage);
+	            }
+	            selectedCard = cardImage;
+	            createSelectedImage(event.clientX, event.clientY);
+	            generateImage = setInterval(() => {
+	                createSelectedImage(mousePosition.x, mousePosition.y);
+	            }, 10);
+	        });
+	    });
+
+	    function createSelectedImage(x, y) {
+	        const newImage = selectedCard.cloneNode(true);
+	        newImage.style.left = x - 10 + 'px';
+	        newImage.style.top = y - 10 + 'px';
+	        document.body.appendChild(newImage);
+	    }
+
+	    document.addEventListener('mousemove', (event) => {
+	        mousePosition.x = event.clientX;
+	        mousePosition.y = event.clientY;
+	    });
+
+	    const startTime = new Date().getTime(); // 현재 시간을 밀리초로 얻어옵니다.
+		const updateInterval = 1000; // 1초마다 업데이트
+
+		// 타이머 업데이트 함수
+		function updateTimer() {
+		  const currentTime = new Date().getTime(); // 현재 시간을 밀리초로 얻어옵니다.
+		  const elapsedTime = currentTime - startTime; // 경과 시간 계산 (밀리초 단위)
+		  const seconds = Math.floor(elapsedTime / 1000); // 초 단위로 변환
+		  const timerElement = document.getElementById("timer");
+		  timerElement.textContent = seconds; // div 요소에 초 표시
+		}
+
+		// 매 초마다 타이머 업데이트 함수 호출
+		setInterval(updateTimer, updateInterval);
+
+
+		function showCenteredImage() {
+    const errorImage = document.getElementById("error");
+    errorImage.style.display = "block"; 
+    const windowWidth = window.innerWidth - errorImage.offsetWidth;
+    const windowHeight = window.innerHeight - errorImage.offsetHeight;
+    errorImage.style.left = Math.random() * windowWidth + "px";
+    errorImage.style.top = Math.random() * windowHeight + "px";
+}
+
+function hideCenteredImage() {
+    const errorImage = document.getElementById("error");
+    errorImage.style.display = "none"; 
+}
+
+setInterval(function () {
+    showCenteredImage();
+    setTimeout(hideCenteredImage, 2000);
+}, 5000);
+	</script>
+</body>
+</html>
